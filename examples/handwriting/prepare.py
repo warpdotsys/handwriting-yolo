@@ -232,14 +232,22 @@ class Builder:
         for split, pool in pools.items():
             kind = "Train" if split == "train" else "Test"
             paths = sorted(p for p in (self.raw / "02_简中单字" / "原始文件").rglob("*.gnt") if kind in str(p.parent))
-            for path in paths[: 4 if self.profile == "pilot" else 16]:
+            if self.profile == "full":
+                native = self.raw / "02_简中单字" / "原始文件"
+                by_archive = {}
+                for path in paths:
+                    by_archive.setdefault(path.relative_to(native).parts[0], path)
+                paths = list(by_archive.values())
+            else:
+                paths = paths[:4]
+            for path in paths:
                 data, offset, number = path.read_bytes(), 0, 0
                 while offset < len(data):
                     size = struct.unpack_from("<I", data, offset)[0]
                     width, height = struct.unpack_from("<HH", data, offset + 6)
                     if size != 10 + width * height:
                         raise ValueError("Invalid GNT record")
-                    if number % (5 if self.profile == "pilot" else 2) == 0:
+                    if self.profile == "full" or number % 5 == 0:
                         label = data[offset + 4 : offset + 6].rstrip(b"\x00").decode("gb18030")
                         glyph = Image.fromarray(
                             np.frombuffer(data, np.uint8, width * height, offset + 10).reshape(height, width)
