@@ -337,10 +337,10 @@ class Builder:
                     x0, y0 = np.min(all_points, axis=0)
                     x1, y1 = np.max(all_points, axis=0)
                     scale = 480 / max(x1 - x0, y1 - y0, 1)
-                    transform = lambda point, x0=x0, y0=y0, scale=scale: (
-                        (point[0] - x0) * scale + 16,
-                        (point[1] - y0) * scale + 16,
-                    )
+
+                    def transform(point, x0=x0, y0=y0, scale=scale):
+                        return (point[0] - x0) * scale + 16, (point[1] - y0) * scale + 16
+
                     image = Image.new("RGB", (int((x1 - x0) * scale) + 33, int((y1 - y0) * scale) + 33), "white")
                     draw = ImageDraw.Draw(image)
                     for points in traces.values():
