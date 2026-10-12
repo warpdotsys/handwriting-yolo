@@ -15,7 +15,7 @@ def main():
     parser.add_argument("--data", required=True, type=Path)
     parser.add_argument("--runs", required=True, type=Path)
     parser.add_argument("--epochs", type=int, default=3)
-    parser.add_argument("--batch", type=int, default=4)
+    parser.add_argument("--batch", type=int, default=2)
     args = parser.parse_args()
     if not torch.cuda.is_available():
         raise RuntimeError("A working CUDA GPU is required for this local training profile")

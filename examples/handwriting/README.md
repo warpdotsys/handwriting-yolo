@@ -29,12 +29,12 @@ uv pip install torch torchvision --index-url https://download.pytorch.org/whl/cu
 uv pip install -e .
 python examples/handwriting/fetch.py --raw-root D:\Datasets\handwriting_raw
 python examples/handwriting/prepare.py --raw-root D:\Datasets\handwriting_raw --output D:\Datasets\handwriting_yolo_pilot_clean --profile pilot
-python examples/handwriting/train.py --data D:\Datasets\handwriting_yolo_pilot_clean\data.yaml --runs D:\Datasets\handwriting_yolo_runs --epochs 3 --batch 4
+python examples/handwriting/train.py --data D:\Datasets\handwriting_yolo_pilot_clean\data.yaml --runs D:\Datasets\handwriting_yolo_runs --epochs 3 --batch 2
 ```
 
 如果已经有本次整理好的原始数据，可使用 `fetch.py --verify-only` 检查源文件，不再下载和展开。`prepare.py` 要求空输出目录，避免旧标签或划分与新版本混用。
 
-本机环境：RTX 5060 Laptop 8 GB，16 GB 内存；Python 3.14.6、PyTorch 2.14.1+cu130、torchvision 0.29.1+cu130。YOLO26n 使用 512 输入、AMP 和小批次；关闭水平/垂直翻转、大角度旋转、Mosaic、MixUp，以免改变字符含义。训练使用已有 Ultralytics 引擎，随后从最佳权重重新运行验证。
+本机环境：RTX 5060 Laptop 8 GB，16 GB 内存；Python 3.14.6、PyTorch 2.14.1+cu130、torchvision 0.29.1+cu130。YOLO26n 使用 512 输入、AMP、batch=2；上游训练内的验证批次会翻倍，batch=4 的初次运行在验证阶段显存不足，故当前配置为 2。关闭水平/垂直翻转、大角度旋转、Mosaic、MixUp，以免改变字符含义。训练使用已有 Ultralytics 引擎，随后从最佳权重重新运行验证。
 
 `--profile full` 扩大真实页面、词图和轨迹样本，并扩大字形组合池。它不是已经收敛的完整训练模型；首轮仅验证处理链、GPU 训练和初步指标。扩量前应增加稀有汉字覆盖、每类样本量与更多真实拍摄条件，再测独立测试集。
 
