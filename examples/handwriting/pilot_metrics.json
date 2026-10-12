@@ -1,0 +1,26 @@
+{
+  "model": "YOLO26n",
+  "ultralytics_baseline": "v8.4.175",
+  "epochs": 3,
+  "image_size": 512,
+  "batch": 2,
+  "train_images": 2709,
+  "validation_images": 604,
+  "classes": 3388,
+  "validation_only_classes": 280,
+  "training_classes_below_five_instances": 1960,
+  "metrics": {
+    "precision": 0.38080574623034963,
+    "recall": 0.012316029563660626,
+    "mAP50": 0.013885530080802335,
+    "mAP50_95": 0.011218417259712241
+  },
+  "independent_page": {
+    "id": "C041-P19",
+    "confidence_threshold": 0.05,
+    "valid_ground_truth": 309,
+    "predictions": 77,
+    "correct_class_and_iou_at_least_0_5": 15
+  },
+  "scope": "Three-epoch pilot with sparse classes and synthetic layouts; not a reliable handwriting recognizer or an overall OCR accuracy benchmark"
+}
